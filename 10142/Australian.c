@@ -16,14 +16,22 @@ int main()
     int candidatos; /* El numero de candidatos */
     int votantes = 0; /* El numero de votantes */
     int votos[1000][20]; /* Los votos*/
+    for(j = 0; j < 1000; ++j)
+      for(k = 0; k < 20; ++k)
+	votos[j][k] = 0;
     char nombres[21][81]; /* Arreglo que contiene los nombres de los 
 			   * candidatos */
+    for(j = 0; j < 21; ++j)
+      for(k = 0; k < 81; ++k)
+	nombres[j][k] = '\0';
     for(j = 1; j < 21; ++j)
       for(k = 0; k < 81; ++k)
 	nombres[j][k] = '\0';
     int d; /* Caracter actual del nombre */
     int no_eliminados[21]; /* Nos dice que candidatos no han sido eliminados */
     int puntuacion[21]; /* Las puntuaciones */
+    for(j = 0; j < 21; ++j)
+      puntuacion[j] = 0;
     int mayor, menor; /* El mayor y menor numero de votos */
     int numayores, numenores; /* El numero de personas con el mayor y menor
 			       * numero de votos (respectivamente) */
@@ -48,8 +56,6 @@ int main()
     /* Hasta aqui solo hemos llenado arreglos */
     int m = 0;
     while(1){
-      for(j = 1; j < 21; ++j)
-	puntuacion[j] = 0;
       m++;
       for(j = 0; j < 20; ++j)
 	ganadores[j] = perdedores[j] = 0;
@@ -59,12 +65,13 @@ int main()
 	while(!no_eliminados[votos[j][k]])
 	  k++;
 	puntuacion[votos[j][k]]++;
-	printf("La puntuacion de %d es: %d\n", votos[j][k], puntuacion[votos[j][k]]);
       }
       /* Se llenan arreglos de ganadores y perdedores */
       mayor = numayores = numenores = 0;
       menor = 1001;
       for(j = 1; j <= candidatos; ++j){
+	if(!no_eliminados[j])
+	  continue;
 	if(puntuacion[j] > mayor){
 	  mayor = puntuacion[j];
 	  numayores = 0;
@@ -83,11 +90,14 @@ int main()
       else{
 	  for(j = 0; j < numenores; ++j)
 	    no_eliminados[perdedores[j]] = 0;
+	  for(j = 0; j < 21; ++j)
+	    puntuacion[j] = 0;
       }
     }
     for(j = 0; j < numayores; ++j){
       printf("%s\n", &nombres[ganadores[j]][0]);
     }
+    
   }
   return 0;
 }
